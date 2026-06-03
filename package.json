@@ -1,0 +1,23 @@
+{
+  "name": "eval-ci-cd",
+  "version": "1.0.0",
+  "description": "Proyecto de evaluación para integración continua y entrega continua.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "echo \"Build ejecutada correctamente\"",
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "ci",
+    "cd",
+    "github-actions",
+    "vercel"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "serve": "^14.2.4"
+  }
+}
