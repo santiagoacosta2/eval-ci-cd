@@ -1,6 +1,12 @@
 const fs = require("fs");
 
-const archivosRequeridos = ["index.html", "src/app.js", "src/mensaje.js"];
+const archivosRequeridos = [
+  "index.html",
+  "styles.css",
+  "src/app.js",
+  "src/conversor.js",
+  "tests/conversor.test.js"
+];
 
 for (const archivo of archivosRequeridos) {
   if (!fs.existsSync(archivo)) {

@@ -3,15 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Evaluación CI/CD</title>
+  <title>Conversor de Unidades CI/CD</title>
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <main>
-    <h1>Evaluación de Integración y Entrega Continua</h1>
-    <p id="mensaje-exito">Cargando mensaje...</p>
+  <main class="layout">
+    <section class="hero">
+      <p class="hero__eyebrow">Demostración CI/CD</p>
+      <h1>Conversor de Unidades CI/CD</h1>
+      <p class="hero__copy">
+        Una aplicación web simple, clara y testeable para practicar integración continua,
+        entrega continua y despliegue en Vercel.
+      </p>
+    </section>
+
+    <section class="panel converter" aria-labelledby="titulo-conversor">
+      <h2 id="titulo-conversor">Convertidor</h2>
+
+      <form id="form-conversor" class="converter__form" novalidate>
+        <label class="field">
+          <span>Valor</span>
+          <input
+            id="valor-input"
+            name="valor"
+            type="text"
+            step="any"
+            inputmode="decimal"
+            placeholder="Ingresá un número"
+            autocomplete="off"
+            required
+          />
+        </label>
+
+        <label class="field">
+          <span>Conversión</span>
+          <select id="tipo-conversion" name="tipoConversion" required>
+            <option value="km-m">Kilómetros a metros</option>
+            <option value="m-cm">Metros a centímetros</option>
+            <option value="c-f">Celsius a Fahrenheit</option>
+            <option value="f-c">Fahrenheit a Celsius</option>
+            <option value="kg-g">Kilogramos a gramos</option>
+            <option value="h-min">Horas a minutos</option>
+          </select>
+        </label>
+
+        <button class="converter__button" type="submit">Convertir</button>
+      </form>
+
+      <div id="resultado" class="estado" aria-live="polite"></div>
+    </section>
+
+    <section class="panel info">
+      <h2>Sobre el proyecto</h2>
+      <p>
+        Este repositorio demuestra un flujo completo de CI/CD con GitHub, GitHub Actions,
+        Jest, ESLint y Vercel.
+      </p>
+    </section>
   </main>
 
-  <script src="./src/mensaje.js"></script>
+  <script src="./src/conversor.js"></script>
   <script src="./src/app.js"></script>
 </body>
 </html>
