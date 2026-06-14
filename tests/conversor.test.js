@@ -11,7 +11,7 @@ const {
 
 describe("conversor de unidades", () => {
   test("convertirKmAMetros(2) devuelve 2000", () => {
-    expect(convertirKmAMetros(3)).toBe(2000);
+    expect(convertirKmAMetros(2)).toBe(2000);
   });
 
   test("convertirMetrosACentimetros(3) devuelve 300", () => {
