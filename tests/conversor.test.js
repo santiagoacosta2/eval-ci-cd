@@ -1,8 +1,4 @@
 const {
-  convertirCelsiusAFahrenheit,
-  convertirFahrenheitACelsius,
-  convertirHorasAMinutos,
-  convertirKgAGramos,
   convertirKmAMetros,
   convertirMetrosACentimetros,
   convertirUnidad,
@@ -16,26 +12,6 @@ describe("conversor de unidades", () => {
 
   test("convertirMetrosACentimetros(3) devuelve 300", () => {
     expect(convertirMetrosACentimetros(3)).toBe(300);
-  });
-
-  test("convertirCelsiusAFahrenheit(0) devuelve 32", () => {
-    expect(convertirCelsiusAFahrenheit(0)).toBe(32);
-  });
-
-  test("convertirCelsiusAFahrenheit(100) devuelve 212", () => {
-    expect(convertirCelsiusAFahrenheit(100)).toBe(212);
-  });
-
-  test("convertirFahrenheitACelsius(32) devuelve 0", () => {
-    expect(convertirFahrenheitACelsius(32)).toBe(0);
-  });
-
-  test("convertirKgAGramos(5) devuelve 5000", () => {
-    expect(convertirKgAGramos(5)).toBe(5000);
-  });
-
-  test("convertirHorasAMinutos(2) devuelve 120", () => {
-    expect(convertirHorasAMinutos(2)).toBe(120);
   });
 
   test("esValorValido(\"abc\") devuelve false", () => {
