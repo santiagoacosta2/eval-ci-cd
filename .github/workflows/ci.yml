@@ -30,3 +30,27 @@ jobs:
 
       - name: Ejecutar build
         run: npm run build
+
+      - name: Notificar resultado en Discord
+        if: always()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          JOB_STATUS: ${{ job.status }}
+          REPOSITORY: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          COMMIT_AUTHOR: ${{ github.actor }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ "$JOB_STATUS" = "success" ]; then
+            STATUS_TITLE="✅ CI/CD Pipeline completado correctamente"
+            STATUS_DETAIL="Las validaciones automáticas finalizaron sin errores."
+          else
+            STATUS_TITLE="❌ CI/CD Pipeline fallido"
+            STATUS_DETAIL="Una o más validaciones fallaron. Revisar los logs de GitHub Actions antes de desplegar."
+          fi
+
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d "{\"content\":\"$STATUS_TITLE\n\n$STATUS_DETAIL\n\nRepositorio: $REPOSITORY\nRama: $BRANCH\nCommit: $COMMIT_MESSAGE\nAutor: $COMMIT_AUTHOR\nEjecución: $RUN_URL\"}" \
+            "$DISCORD_WEBHOOK_URL"
