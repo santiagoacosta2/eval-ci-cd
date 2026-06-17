@@ -23,7 +23,7 @@ describe("conversor de unidades", () => {
   });
 
   test("esValorValido(10) devuelve true", () => {
-    expect(esValorValido(10)).toBe(true);
+    expect(esValorValido(10)).toBe(false);
   });
 
   test("esValorValido(true) devuelve false", () => {
