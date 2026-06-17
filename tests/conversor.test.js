@@ -5,6 +5,8 @@ const {
   esValorValido
 } = require("../src/conversor");
 
+const prueba = 123;
+
 describe("conversor de unidades", () => {
   test("convertirKmAMetros(2) devuelve 2000", () => {
     expect(convertirKmAMetros(2)).toBe(2000);
