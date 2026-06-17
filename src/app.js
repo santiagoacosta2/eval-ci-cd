@@ -1,10 +1,10 @@
 function obtenerConversor() {
   return typeof globalThis !== "undefined" ? globalThis.ConversorUnidades : null;
 }
-
+const hola = "saludo";
 function actualizarEstado(elemento, texto, tipo) {
   if (!elemento) {
-    return;
+    return
   }
 
   elemento.textContent = texto;
