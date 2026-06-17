@@ -1,4 +1,4 @@
-name: Integracion Continua
+name: CI/CD Pipeline
 
 on:
   push:
@@ -37,11 +37,20 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           JOB_STATUS: ${{ job.status }}
           REPOSITORY: ${{ github.repository }}
-          BRANCH: ${{ github.ref_name }}
-          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          EVENT_NAME: ${{ github.event_name }}
+          BRANCH: ${{ github.head_ref || github.ref_name }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message || github.event.pull_request.title }}
           COMMIT_AUTHOR: ${{ github.actor }}
+          COMMIT_SHA: ${{ github.sha }}
           RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
+          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
+            echo "DISCORD_WEBHOOK_URL no está configurado. Se omite la notificación."
+            exit 0
+          fi
+
+          FECHA_HORA=$(date '+%d/%m/%Y %H:%M:%S UTC')
+
           if [ "$JOB_STATUS" = "success" ]; then
             STATUS_TITLE="✅ CI/CD Pipeline completado correctamente"
             STATUS_DETAIL="Las validaciones automáticas finalizaron sin errores."
@@ -50,7 +59,13 @@ jobs:
             STATUS_DETAIL="Una o más validaciones fallaron. Revisar los logs de GitHub Actions antes de desplegar."
           fi
 
+          SHORT_SHA=$(echo "$COMMIT_SHA" | cut -c1-7)
+
+          MENSAJE=$(printf '%s\n\n%s\n\nRepositorio: %s\nEvento: %s\nRama: %s\nCommit: %s\nSHA: %s\nAutor: %s\nFecha y hora: %s\nEjecución: %s' "$STATUS_TITLE" "$STATUS_DETAIL" "$REPOSITORY" "$EVENT_NAME" "$BRANCH" "$COMMIT_MESSAGE" "$SHORT_SHA" "$COMMIT_AUTHOR" "$FECHA_HORA" "$RUN_URL")
+
+          PAYLOAD=$(MENSAJE="$MENSAJE" python3 -c "import json, os; print(json.dumps({'content': os.environ['MENSAJE']}))")
+
           curl -H "Content-Type: application/json" \
             -X POST \
-            -d "{\"content\":\"$STATUS_TITLE\n\n$STATUS_DETAIL\n\nRepositorio: $REPOSITORY\nRama: $BRANCH\nCommit: $COMMIT_MESSAGE\nAutor: $COMMIT_AUTHOR\nEjecución: $RUN_URL\"}" \
+            -d "$PAYLOAD" \
             "$DISCORD_WEBHOOK_URL"
