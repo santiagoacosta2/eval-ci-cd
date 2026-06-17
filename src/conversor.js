@@ -1,8 +1,8 @@
 function esValorValido(valor) {
   if (valor === null || valor === undefined) {
-    return false;
+    return false
   }
-
+const hola = "mundo";
   if (typeof valor !== "string" && typeof valor !== "number") {
     return false;
   }
