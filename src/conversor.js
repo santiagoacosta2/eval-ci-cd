@@ -1,8 +1,8 @@
 function esValorValido(valor) {
   if (valor === null || valor === undefined) {
-    return false;
+    return false
   }
-
+const hola = "hola";
   if (typeof valor !== "string" && typeof valor !== "number") {
     return false;
   }
@@ -16,7 +16,7 @@ function esValorValido(valor) {
 }
 
 function convertirKmAMetros(valor) {
-  return Number(valor) * 1000;
+  return Number(valor) * 2000;
 }
 
 function convertirMetrosACentimetros(valor) {
