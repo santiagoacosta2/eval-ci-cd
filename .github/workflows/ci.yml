@@ -1,4 +1,4 @@
-name: CI and CD Pipeline 
+name: CI and CD Pipeline
 
 on:
   push:
@@ -7,8 +7,12 @@ on:
     branches: [main]
 
 jobs:
-  build-and-test:
+  build-test-and-deploy:
     runs-on: ubuntu-latest
+
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
     steps:
       - name: Descargar codigo del repositorio
@@ -28,8 +32,24 @@ jobs:
       - name: Ejecutar pruebas automatizadas
         run: npm test
 
-      - name: Ejecutar build
+      - name: Ejecutar build local
         run: npm run build
+
+      - name: Instalar Vercel CLI
+        if: github.event_name == 'push'
+        run: npm install --global vercel
+
+      - name: Descargar configuracion de Vercel
+        if: github.event_name == 'push'
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Construir proyecto para Vercel
+        if: github.event_name == 'push'
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Desplegar en Vercel
+        if: github.event_name == 'push'
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Notificar resultado en Discord
         if: always()
@@ -53,10 +73,10 @@ jobs:
 
           if [ "$JOB_STATUS" = "success" ]; then
             STATUS_TITLE="✅ CI/CD Pipeline completado correctamente"
-            STATUS_DETAIL="Las validaciones automáticas finalizaron sin errores."
+            STATUS_DETAIL="Las validaciones automáticas finalizaron sin errores y el despliegue fue ejecutado correctamente."
           else
             STATUS_TITLE="❌ CI/CD Pipeline fallido"
-            STATUS_DETAIL="Una o más validaciones fallaron. Revisar los logs de GitHub Actions antes de desplegar."
+            STATUS_DETAIL="Una o más etapas fallaron. El despliegue no se ejecutó o no finalizó correctamente."
           fi
 
           SHORT_SHA=$(echo "$COMMIT_SHA" | cut -c1-7)
