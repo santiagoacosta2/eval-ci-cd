@@ -16,7 +16,7 @@ function esValorValido(valor) {
 }
 
 function convertirKmAMetros(valor) {
-  return Number(valor) * 2000;
+  return Number(valor) * 1000;
 }
 
 function convertirMetrosACentimetros(valor) {
